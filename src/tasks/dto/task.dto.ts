@@ -1,6 +1,9 @@
 import { IsString, IsNotEmpty, MinLength, IsArray, IsOptional, IsInt } from 'class-validator';
 
+export type TaskStatus = 'Working' | 'Pending' | 'Completed';
+
 export class CreateTaskDto {
+
     @IsString()
     @IsNotEmpty()
     @MinLength(3, { message: 'Title must be at least 3 characters long' })
@@ -12,7 +15,7 @@ export class CreateTaskDto {
 
     @IsString()
     @IsNotEmpty()
-    status: string;
+    status: TaskStatus;
 
     @IsArray()
     @IsOptional()

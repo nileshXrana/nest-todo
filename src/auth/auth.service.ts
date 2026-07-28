@@ -10,15 +10,27 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) { }
 
-    async signIn(createUser: CreateUserDto): Promise<{ access_token: string }> {
-        let user = await this.usersService.findByEmail(createUser.email);
-        if (!user) {
-            user = await this.usersService.createUser(createUser);
-        } else if (user.password !== createUser.password) {
-            throw new UnauthorizedException('Invalid credentials');
+    async signIn(email: string, pass: string): Promise<any> {
+
+        const user = await this.usersService.findOne(email);
+        if (user?.password !== pass) {
+            throw new UnauthorizedException();
         }
 
-        const payload = { id: user.id, name: user.name, email: user.email };
+
+        const payload = { id: user.id, email: user.email };
+        return {
+            // 💡 Here the JWT secret key that's used for signing the payload 
+            // is the key that was passed in the JwtModule
+            access_token: await this.jwtService.signAsync(payload),
+        };
+
+    }
+
+    async signUp(name: string, email: string, pass: string): Promise<any> {
+
+        const newUser = await this.usersService.createUser({ name, email, password: pass });
+        const payload = { id: newUser.id, email: newUser.email };
         return {
             access_token: await this.jwtService.signAsync(payload),
         };

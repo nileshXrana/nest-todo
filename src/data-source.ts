@@ -10,7 +10,7 @@ export const AppDataSourceOptions: DataSourceOptions & SeederOptions = {
     port: 5432,
     username: 'postgres',
     password: '12307080',
-    database: 'postgres',
+    database: 'todo',
     entities: [User, Task, Label],
     synchronize: false,
     migrationsRun: true,

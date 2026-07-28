@@ -13,6 +13,7 @@ export default class LabelSeeder implements Seeder {
             const exists = await repository.findOneBy({ label: labelName });
             if (!exists) {
                 await repository.insert({ label: labelName });
+
             }
         }
     }

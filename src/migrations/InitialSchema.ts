@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class InitialSchema implements MigrationInterface {
+export class InitialSchema1785196800000 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            CREATE TABLE "user" (
+            CREATE TABLE IF NOT EXISTS "user" (
                 "id" SERIAL PRIMARY KEY,
                 "name" VARCHAR(30) NOT NULL,
                 "email" VARCHAR(40) NOT NULL UNIQUE,
@@ -13,14 +13,14 @@ export class InitialSchema implements MigrationInterface {
         `);
 
         await queryRunner.query(`
-            CREATE TABLE "label" (
+            CREATE TABLE IF NOT EXISTS "label" (
                 "id" SERIAL PRIMARY KEY,
                 "label" VARCHAR NOT NULL UNIQUE
             )
         `);
 
         await queryRunner.query(`
-            CREATE TABLE "task" (
+            CREATE TABLE IF NOT EXISTS "task" (
                 "id" SERIAL PRIMARY KEY,
                 "userId" INTEGER NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
                 "task" VARCHAR(100),
@@ -31,7 +31,7 @@ export class InitialSchema implements MigrationInterface {
         `);
 
         await queryRunner.query(`
-            CREATE TABLE "task_labels_label" (
+            CREATE TABLE IF NOT EXISTS "task_labels_label" (
                 "taskId" INTEGER NOT NULL REFERENCES "task"("id") ON DELETE CASCADE,
                 "labelId" INTEGER NOT NULL REFERENCES "label"("id") ON DELETE CASCADE,
                 PRIMARY KEY ("taskId", "labelId")
@@ -40,9 +40,9 @@ export class InitialSchema implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query('DROP TABLE "task_labels_label"');
-        await queryRunner.query('DROP TABLE "task"');
-        await queryRunner.query('DROP TABLE "label"');
-        await queryRunner.query('DROP TABLE "user"');
+        // await queryRunner.query('DROP TABLE IF EXISTS "task_labels_label"');
+        // await queryRunner.query('DROP TABLE IF EXISTS "task"');
+        // await queryRunner.query('DROP TABLE IF EXISTS "label"');
+        // await queryRunner.query('DROP TABLE IF EXISTS "user"');
     }
 }
