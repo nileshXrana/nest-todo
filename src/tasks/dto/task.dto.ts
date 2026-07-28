@@ -1,14 +1,21 @@
-import { IsString, IsNotEmpty, MinLength, IsInt } from 'class-validator';
+import { IsString, IsNotEmpty, MinLength, IsArray, IsOptional, IsInt } from 'class-validator';
 
 export class CreateTaskDto {
-
-    @IsInt()
+    @IsString()
     @IsNotEmpty()
-    userId: number;
+    @MinLength(3, { message: 'Title must be at least 3 characters long' })
+    title: string;
 
     @IsString()
     @IsNotEmpty()
-    @MinLength(3, { message: 'Task must be at least 3 characters long' })
-    task: string;
+    description: string;
 
+    @IsString()
+    @IsNotEmpty()
+    status: string;
+
+    @IsArray()
+    @IsOptional()
+    @IsInt({ each: true })
+    labelIds?: number[];
 }
