@@ -8,6 +8,9 @@ export class Task {
 
     @PrimaryGeneratedColumn()
     id: number;
+    
+    @Column()
+    userId: number;
 
     @Column({ type: 'varchar', length: 100 })
     title: string;
@@ -18,7 +21,10 @@ export class Task {
     @Column({ type: 'enum', enum: ['Working', 'Pending', 'Completed'] })
     status: string;
 
+    @Column({ type: 'boolean', default: false })
+    checked: boolean;
 
+    // relationships
     @ManyToOne(() => User, (user) => user.tasks)
     user: User;
 

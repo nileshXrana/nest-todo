@@ -28,11 +28,7 @@ export class AuthService {
     }
 
     async signUp(name: string, email: string, pass: string): Promise<any> {
-
         const newUser = await this.usersService.createUser({ name, email, password: pass });
-        const payload = { id: newUser.id, email: newUser.email };
-        return {
-            access_token: await this.jwtService.signAsync(payload),
-        };
+        return { id: newUser.id, email: newUser.email };
     }
 }
